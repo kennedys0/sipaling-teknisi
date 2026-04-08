@@ -1,5 +1,5 @@
 {
   "name": "SIPALING TEKNISI",
-  "description": "Tools perhitungan ODP & FTTH untuk teknisi lapangan fiber optik",
+  "description": "Sipaling Teknisi: Aplikasi kalkulator fiber optik profesional untuk perhitungan ODP, Link Budget FTTH, dan perancangan Cascaded FBT. Dirancang khusus untuk teknisi lapangan ISP dan Telkom.",
   "requestFramePermissions": []
 }
