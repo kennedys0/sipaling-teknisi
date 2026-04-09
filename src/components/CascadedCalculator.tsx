@@ -79,14 +79,14 @@ export const CascadedCalculator: React.FC = () => {
   };
 
   return (
-    <div className="bg-zinc-900/50 border border-zinc-800 p-6 rounded-2xl shadow-xl backdrop-blur-sm mt-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="bg-zinc-900/50 border border-zinc-800 p-4 md:p-6 rounded-2xl shadow-xl backdrop-blur-sm mt-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-2">
           <GitBranch size={20} className="text-purple-400" />
-          <h2 className="text-xl font-semibold text-white">Cascaded FBT Designer</h2>
+          <h2 className="text-lg md:text-xl font-semibold text-white">Cascaded FBT Designer</h2>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="bg-zinc-800 p-1 rounded-xl border border-zinc-700 flex gap-1 mr-2">
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="bg-zinc-800 p-1 rounded-xl border border-zinc-700 flex gap-1">
             <button
               onClick={() => setViewMode('config')}
               className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all ${viewMode === 'config' ? 'bg-purple-500 text-white shadow-lg' : 'text-zinc-500 hover:text-zinc-300'}`}
@@ -102,20 +102,20 @@ export const CascadedCalculator: React.FC = () => {
           </div>
           <button
             onClick={() => setShowTable(true)}
-            className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-2 rounded-xl border border-zinc-700 transition-colors text-xs font-bold uppercase tracking-wider"
+            className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-2 rounded-xl border border-zinc-700 transition-colors text-[10px] md:text-xs font-bold uppercase tracking-wider"
           >
-            <Table size={16} className="text-purple-400" />
+            <Table size={14} className="text-purple-400" />
             Ratio Table
           </button>
-          <div className="flex items-center gap-3 bg-zinc-800 p-2 rounded-xl border border-zinc-700">
-            <span className="text-xs font-bold text-zinc-500 uppercase px-2">Initial Power</span>
+          <div className="flex items-center gap-2 bg-zinc-800 p-1.5 md:p-2 rounded-xl border border-zinc-700">
+            <span className="text-[10px] font-bold text-zinc-500 uppercase px-1 md:px-2">Initial</span>
             <input 
               type="number" 
               value={initialPower}
               onChange={(e) => setInitialPower(parseFloat(e.target.value) || 0)}
-              className="w-16 bg-transparent text-white font-bold focus:outline-none text-center"
+              className="w-12 md:w-16 bg-transparent text-white font-bold focus:outline-none text-center text-xs md:text-sm"
             />
-            <span className="text-xs text-zinc-500 pr-2">dBm</span>
+            <span className="text-[10px] text-zinc-500 pr-1 md:pr-2">dBm</span>
           </div>
         </div>
       </div>
@@ -338,22 +338,40 @@ export const CascadedCalculator: React.FC = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="relative"
+              className="relative group/visual"
             >
-              <button
-                onClick={handleDownload}
-                className="absolute top-4 right-4 z-20 flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-xl shadow-lg transition-all font-bold text-xs uppercase tracking-wider"
-              >
-                <Download size={16} />
-                Save PNG
-              </button>
+              <div className="absolute top-4 right-4 z-20 flex flex-col md:flex-row gap-2">
+                <button
+                  onClick={() => {
+                    // Simple reset logic by re-mounting or just state if we had one
+                    setViewMode('config');
+                    setTimeout(() => setViewMode('visual'), 10);
+                  }}
+                  className="bg-zinc-800 hover:bg-zinc-700 text-zinc-400 px-3 py-2 rounded-xl border border-zinc-700 transition-all font-bold text-[10px] uppercase tracking-wider"
+                >
+                  Reset View
+                </button>
+                <button
+                  onClick={handleDownload}
+                  className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-xl shadow-lg transition-all font-bold text-xs uppercase tracking-wider"
+                >
+                  <Download size={16} />
+                  Save PNG
+                </button>
+              </div>
 
-              <div 
-                ref={visualRef}
-                className="bg-zinc-950 rounded-3xl p-12 border border-zinc-800 min-h-[600px] flex flex-col items-center overflow-x-auto"
-              >
-                {/* Transmitter */}
-                <div className="flex flex-col items-center mb-12">
+              <div className="bg-zinc-950 rounded-3xl border border-zinc-800 min-h-[600px] overflow-hidden cursor-grab active:cursor-grabbing relative">
+                <div className="absolute inset-0 opacity-20 pointer-events-none" 
+                     style={{ backgroundImage: 'radial-gradient(circle, #27272a 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
+                
+                <motion.div 
+                  drag
+                  dragMomentum={false}
+                  ref={visualRef}
+                  className="p-12 md:p-24 flex flex-col items-center min-w-max"
+                >
+                  {/* Transmitter */}
+                  <div className="flex flex-col items-center mb-12">
                 <div className="bg-emerald-500/10 border-2 border-emerald-500/30 p-6 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.1)] flex flex-col items-center">
                   <Server size={32} className="text-emerald-400 mb-2" />
                   <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500/70">Transmitter</span>
@@ -424,12 +442,13 @@ export const CascadedCalculator: React.FC = () => {
               </div>
 
               {/* End Point */}
-              <div className="mt-12 flex flex-col items-center">
-                <div className="w-px h-8 bg-zinc-800" />
-                <div className="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-[10px] font-bold text-zinc-600 uppercase tracking-widest">
-                  End of Chain
+                <div className="mt-12 flex flex-col items-center">
+                  <div className="w-px h-8 bg-zinc-800" />
+                  <div className="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-[10px] font-bold text-zinc-600 uppercase tracking-widest">
+                    End of Chain
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
           )}

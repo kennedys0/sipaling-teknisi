@@ -16,23 +16,23 @@ export const ResultCard: React.FC<ResultCardProps> = ({ label, value, icon, colo
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-zinc-900/50 border ${warning ? 'border-red-500/50' : 'border-zinc-800'} p-6 rounded-2xl shadow-xl backdrop-blur-sm relative overflow-hidden group hover:border-emerald-500/50 transition-colors`}
+      className={`bg-zinc-900/50 border ${warning ? 'border-red-500/50' : 'border-zinc-800'} p-4 md:p-6 rounded-2xl shadow-xl backdrop-blur-sm relative overflow-hidden group hover:border-emerald-500/50 transition-colors`}
     >
       <div className={`absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity ${color}`}>
-        {React.cloneElement(icon as React.ReactElement, { size: 120 })}
+        {React.cloneElement(icon as React.ReactElement, { size: 100 })}
       </div>
       
       <div className="relative z-10">
-        <div className="flex items-center gap-3 mb-4">
-          <div className={`p-2 rounded-lg ${color} bg-opacity-10`}>
-            {React.cloneElement(icon as React.ReactElement, { size: 20, className: color })}
+        <div className="flex items-center gap-3 mb-3 md:mb-4">
+          <div className={`p-1.5 md:p-2 rounded-lg ${color} bg-opacity-10`}>
+            {React.cloneElement(icon as React.ReactElement, { size: 18, className: color })}
           </div>
-          <span className="text-sm font-medium text-zinc-400 uppercase tracking-wider">{label}</span>
+          <span className="text-xs md:text-sm font-medium text-zinc-400 uppercase tracking-wider">{label}</span>
         </div>
         
         <div className="flex items-baseline gap-2">
-          <h3 className="text-3xl font-bold text-white">{value}</h3>
-          {subtitle && <span className="text-zinc-500 text-sm">{subtitle}</span>}
+          <h3 className="text-2xl md:text-3xl font-bold text-white">{value}</h3>
+          {subtitle && <span className="text-zinc-500 text-xs md:text-sm">{subtitle}</span>}
         </div>
 
         {warning && (
